@@ -9,16 +9,16 @@
 <body>
     <!-- パスワード入力画面 -->
     <div id="password-screen">
-        <input type="password" id="password-input" placeholder="パスワードを入れてね">
+        <input type="password" id="password" placeholder="パスワードを入れてね">
         <button onclick="checkPassword()">入る</button>
     </div>
 
     <!-- ツール画面（最初は隠す） -->
-    <div id="tool-screen" style="display: none;">
+    <div id="search-screen" style="display: none;">
         <div id="controls">
             <input type="text" id="word1" placeholder="ワード1（例：着物）">
             <input type="text" id="word2" placeholder="ワード2（例：遊園地）">
-            <input type="number" id="minnFollowers" min="0" step="10" value="0" placeholder="最低フォロワー数">
+            <input type="number" id="minFollowers" min="0" step="10" value="0" placeholder="最低フォロワー数">
             <button onclick="search()">検索</button>
             <button onclick="exportCSV()">CSVで保存</button>
             <p>総検索人数: <span id="total-count">0</span> | 今月の検索人数: <span id="month-count">0</span></p>
