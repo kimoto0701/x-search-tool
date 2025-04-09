@@ -2,9 +2,10 @@
   "name": "x-search-tool",
   "version": "1.0.0",
   "dependencies": {
-    "twitter-api-v2": "^1.12.0",
+    "axios": "^1.6.0",
     "csv-writer": "^1.6.0",
-    "axios": "^1.6.0"
+    "dotenv": "^16.4.7",
+    "twitter-api-v2": "^1.12.0"
   },
   "scripts": {
     "start": "vercel dev",
