@@ -1,11 +1,15 @@
 // パスワードチェック
 function checkPassword() {
-    const password = document.getElementById("password-input").value;
-    if (password === "1234") {
-        document.getElementById("password-screen").style.display = "none";
-        document.getElementById("tool-screen").style.display = "block";
+    console.log("ボタン押したよ");
+    const password = document.getElementById('password').value;
+    console.log("入力されたパスワード:", password);
+    if (password === '1234') {
+        document.getElementById('password-screen').style.display = 'none';
+        document.getElementById('search-screen').style.display = 'block';
+        console.log("パスワードOK、画面切り替え");
     } else {
-        alert("パスワードが違います！");
+        alert('パスワードが違います');
+        console.log("パスワードNG");
     }
 }
 
