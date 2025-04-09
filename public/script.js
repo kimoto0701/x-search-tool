@@ -84,3 +84,41 @@ function exportCSV() {
     link.download = "x-search-results.csv";
     link.click();
 }
+
+// 検索ボタンが押されたときの処理（既存のコードを仮定）
+let lastSearchTime = 0;
+const searchCooldown = 5000; // 5秒待機（5000ミリ秒）
+
+async function search() {
+    const now = Date.now();
+    if (now - lastSearchTime < searchCooldown) {
+        alert('少し待ってね！5秒以内に連続検索はできません。');
+        return;
+    }
+
+    const word1 = document.getElementById('word1').value;
+    const word2 = document.getElementById('word2').value;
+    const minFollowers = document.getElementById('minFollowers').value;
+
+    try {
+        const response = await fetch(`/api/search?word1=${word1}&word2=${word2}&minFollowers=${minFollowers}`);
+        const results = await response.json();
+
+        if (results.error) {
+            alert(`${results.error} ${results.details ? JSON.stringify(results.details) : ''}`);
+            return;
+        }
+
+        displayResults(results); // 仮の表示関数
+        lastSearchTime = now; // 検索時間を更新
+    } catch (error) {
+        alert('検索中にエラーが発生しました');
+        console.error(error);
+    }
+}
+
+// 仮の表示関数（既存のコードに合わせてください）
+function displayResults(results) {
+    const resultDiv = document.getElementById('results');
+    resultDiv.innerHTML = results.map(r => `<p>${r.name} (@${r.username}): ${r.tweetText}</p>`).join('');
+}
