@@ -7,9 +7,9 @@ module.exports = async (req, res) => {
         return res.status(400).json({ error: "2つのワードを入れてね" });
     }
 
-    const bearerToken = "AAAAAAAAAAAAAAAAAAAAAAnK0QEAAAAA0V23zNHDMYnhibeW3i6LJylOZ2A%3D53FimQAT0qB0PyR4GrXlkZaZFWtJzV4f1KAmfSNsbo3vSRIzdP"; // ★正しいBearer Tokenを入れてね
+    const bearerToken = "AAAAAAAAAAAAAAAAAAAAAAnK0QEAAAAAuB73E2lop8GEi8ssCbTZhOyZ4ig%3DaTYBAl08CAqg599H6JWF6pP1lqKCd04nMKDtqO4cTPbnzXdDIM"; // ★正しいBearer Tokenを入れてね
 
-    if (!bearerToken || bearerToken === "AAAAAAAAAAAAAAAAAAAAAAnK0QEAAAAA0V23zNHDMYnhibeW3i6LJylOZ2A%3D53FimQAT0qB0PyR4GrXlkZaZFWtJzV4f1KAmfSNsbo3vSRIzdP") {
+    if (!bearerToken || bearerToken === "AAAAAAAAAAAAAAAAAAAAAAnK0QEAAAAAuB73E2lop8GEi8ssCbTZhOyZ4ig%3DaTYBAl08CAqg599H6JWF6pP1lqKCd04nMKDtqO4cTPbnzXdDIM") {
         return res.status(500).json({ error: "Bearer Tokenが設定されてないよ" });
     }
 
