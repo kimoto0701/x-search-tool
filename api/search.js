@@ -25,9 +25,12 @@ module.exports = async (req, res) => {
         const filteredResults = tweets.map(tweet => {
             const user = users.find(u => u.id === tweet.author_id);
             const followers = user.public_metrics.followers_count;
-            const hasWord1 = tweet.text.toLowerCase().includes(word1.toLowerCase()) || user.description.toLowerCase().includes(word1.toLowerCase());
-            const hasWord2 = tweet.text.toLowerCase().includes(word2.toLowerCase()) || user.description.toLowerCase().includes(word2.toLowerCase());
-            if (followers >= minFollowers && hasWord1 && hasWord2) {
+            const tweetHasWord1 = tweet.text.toLowerCase().includes(word1.toLowerCase());
+            const descHasWord2 = user.description.toLowerCase().includes(word2.toLowerCase());
+            const tweetHasWord2 = tweet.text.toLowerCase().includes(word2.toLowerCase());
+            const descHasWord1 = user.description.toLowerCase().includes(word1.toLowerCase());
+            
+            if (followers >= minFollowers && ((tweetHasWord1 && descHasWord2) || (tweetHasWord2 && descHasWord1))) {
                 return {
                     name: user.name,
                     username: user.username,
@@ -37,7 +40,18 @@ module.exports = async (req, res) => {
                 };
             }
         }).filter(result => result);
-        res.status(200).json(filteredResults);
+
+        // 重複排除
+        const uniqueResults = [];
+        const seenUsernames = new Set();
+        filteredResults.forEach(result => {
+            if (!seenUsernames.has(result.username)) {
+                seenUsernames.add(result.username);
+                uniqueResults.push(result);
+            }
+        });
+
+        res.status(200).json(uniqueResults);
     } catch (error) {
         console.log("エラー詳細:", error.response ? error.response.data : error.message);
         res.status(500).json({ 
