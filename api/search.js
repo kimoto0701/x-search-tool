@@ -2,25 +2,16 @@ const axios = require('axios');
 
 module.exports = async (req, res) => {
     const { word1, word2, minFollowers } = req.query;
-
-    // ワードが入力されていない場合
     if (!word1 || !word2) {
         return res.status(400).json({ error: "2つのワードを入れてね" });
     }
-
-    // Bearer Tokenを設定（あなたのトークン）
     const bearerToken = "AAAAAAAAAAAAAAAAAAAAAAnK0QEAAAAAuB73E2lop8GEi8ssCbTZhOyZ4ig%3DaTYBAl08CAqg599H6JWF6pP1lqKCd04nMKDtqO4cTPbnzXdDIM";
-
-    // トークンが空かチェック
     if (!bearerToken) {
         return res.status(500).json({ error: "Bearer Tokenが設定されてないよ" });
     }
-
     try {
         const response = await axios.get("https://api.twitter.com/2/tweets/search/recent", {
-            headers: {
-                "Authorization": `Bearer ${bearerToken}`
-            },
+            headers: { "Authorization": `Bearer ${bearerToken}` },
             params: {
                 "query": `${word1} ${word2}`,
                 "max_results": 100,
@@ -29,7 +20,6 @@ module.exports = async (req, res) => {
                 "user.fields": "username,name,description,public_metrics"
             }
         });
-
         const tweets = response.data.data || [];
         const users = response.data.includes?.users || [];
         const filteredResults = tweets.map(tweet => {
@@ -47,7 +37,6 @@ module.exports = async (req, res) => {
                 };
             }
         }).filter(result => result);
-
         res.status(200).json(filteredResults);
     } catch (error) {
         console.log("エラー詳細:", error.response ? error.response.data : error.message);
