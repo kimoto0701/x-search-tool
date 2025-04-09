@@ -27,47 +27,15 @@ async function search() {
 
     document.getElementById("results").innerHTML = "検索中...";
 
-    const bearerToken = "AAAAAAAAAAAAAAAAAAAAAAnK0QEAAAAA0V23zNHDMYnhibeW3i6LJylOZ2A%3D53FimQAT0qB0PyR4GrXlkZaZFWtJzV4f1KAmfSNsbo3vSRIzdP"; // ★ここに正しいBearer Tokenを入れてね
-
     try {
-        // X APIで投稿を検索
-        const response = await axios.get("https://api.twitter.com/2/tweets/search/recent", {
-            headers: {
-                "Authorization": `Bearer ${bearerToken}`
-            },
-            params: {
-                "query": `${word1} ${word2}`, // 2つのワードを含む投稿を検索
-                "max_results": 100, // 最大100件
-                "tweet.fields": "author_id", // 投稿者のIDを取る
-                "expansions": "author_id", // 投稿者の情報を取る
-                "user.fields": "username,name,description,public_metrics" // ユーザー情報
-            }
+        const response = await axios.get("/api/search", {
+            params: { word1, word2, minFollowers }
         });
-
-        // 検索結果を整理
-        const tweets = response.data.data || [];
-        const users = response.data.includes?.users || [];
-        const filteredResults = tweets.map(tweet => {
-            const user = users.find(u => u.id === tweet.author_id);
-            const followers = user.public_metrics.followers_count;
-            const hasWord1 = tweet.text.toLowerCase().includes(word1.toLowerCase()) || user.description.toLowerCase().includes(word1.toLowerCase());
-            const hasWord2 = tweet.text.toLowerCase().includes(word2.toLowerCase()) || user.description.toLowerCase().includes(word2.toLowerCase());
-            if (followers >= minFollowers && hasWord1 && hasWord2) {
-                return {
-                    name: user.name,
-                    username: user.username,
-                    description: user.description,
-                    tweetText: tweet.text,
-                    followers: followers
-                };
-            }
-        }).filter(result => result); // 条件に合わないものは除外
-
-        displayResults(filteredResults);
-        updateCounts(filteredResults.length);
+        const results = response.data;
+        displayResults(results);
+        updateCounts(results.length);
     } catch (error) {
-        console.error(error);
-        document.getElementById("results").innerHTML = "エラーが出たよ: " + error.message;
+        document.getElementById("results").innerHTML = "エラーが出たよ: " + (error.response?.data?.error || error.message);
     }
 }
 
@@ -75,7 +43,7 @@ async function search() {
 function displayResults(results) {
     const resultsDiv = document.getElementById("results");
     resultsDiv.innerHTML = "";
-    const limitedResults = results.slice(0, 100); // 最大100件
+    const limitedResults = results.slice(0, 100);
     limitedResults.forEach(result => {
         const word1 = document.getElementById("word1").value;
         const word2 = document.getElementById("word2").value;
