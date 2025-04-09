@@ -3,7 +3,8 @@ const axios = require('axios');
 module.exports = async (req, res) => {
     const { word1, word2, minFollowers } = req.query;
     if (!word1 || !word2) return res.status(400).json({ error: "2つのワードを入れてね" });
-    const bearerToken = "YOUR_BEARER_TOKEN"; // 実際のトークンを使ってね
+    const bearerToken = "AAAAAAAAAAAAAAAAAAAAAAnK0QEAAAAAuB73E2lop8GEi8ssCbTZhOyZ4ig%3DaTYBAl08CAqg599H6JWF6pP1lqKCd04nMKDtqO4cTPbnzXdDIM
+"; // ← コピーしたトークンを入れる
     try {
         const response = await axios.get("https://api.twitter.com/2/tweets/search/recent", {
             headers: { "Authorization": `Bearer ${bearerToken}` },
@@ -33,10 +34,8 @@ module.exports = async (req, res) => {
         res.status(200).json(uniqueResults);
     } catch (error) {
         if (error.response && error.response.status === 429) {
-            // 429エラーの場合、そのままクライアントに伝える
             res.status(429).json({ error: "リクエストが多すぎるよ！少し待ってからまた試してね", details: error.response.data });
         } else {
-            // その他のエラー
             res.status(500).json({ error: "Twitter APIでエラーが出たよ", details: error.response ? error.response.data : error.message });
         }
     }
