@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
 
     const bearerToken = "AAAAAAAAAAAAAAAAAAAAAAnK0QEAAAAA0V23zNHDMYnhibeW3i6LJylOZ2A%3D53FimQAT0qB0PyR4GrXlkZaZFWtJzV4f1KAmfSNsbo3vSRIzdP"; // ★正しいBearer Tokenを入れてね
 
-    if (!bearerToken || bearerToken === "あなたのBearer Tokenをここに貼る") {
+    if (!bearerToken || bearerToken === "AAAAAAAAAAAAAAAAAAAAAAnK0QEAAAAA0V23zNHDMYnhibeW3i6LJylOZ2A%3D53FimQAT0qB0PyR4GrXlkZaZFWtJzV4f1KAmfSNsbo3vSRIzdP") {
         return res.status(500).json({ error: "Bearer Tokenが設定されてないよ" });
     }
 
