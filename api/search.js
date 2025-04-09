@@ -3,13 +3,16 @@ const axios = require('axios');
 module.exports = async (req, res) => {
     const { word1, word2, minFollowers } = req.query;
 
+    // ワードが入力されていない場合
     if (!word1 || !word2) {
         return res.status(400).json({ error: "2つのワードを入れてね" });
     }
 
-    const bearerToken = "AAAAAAAAAAAAAAAAAAAAAAnK0QEAAAAAuB73E2lop8GEi8ssCbTZhOyZ4ig%3DaTYBAl08CAqg599H6JWF6pP1lqKCd04nMKDtqO4cTPbnzXdDIM"; // ★正しいBearer Tokenを入れてね
+    // Bearer Tokenを設定（あなたのトークン）
+    const bearerToken = "AAAAAAAAAAAAAAAAAAAAAAnK0QEAAAAAuB73E2lop8GEi8ssCbTZhOyZ4ig%3DaTYBAl08CAqg599H6JWF6pP1lqKCd04nMKDtqO4cTPbnzXdDIM";
 
-    if (!bearerToken || bearerToken === "AAAAAAAAAAAAAAAAAAAAAAnK0QEAAAAAuB73E2lop8GEi8ssCbTZhOyZ4ig%3DaTYBAl08CAqg599H6JWF6pP1lqKCd04nMKDtqO4cTPbnzXdDIM") {
+    // トークンが空かチェック
+    if (!bearerToken) {
         return res.status(500).json({ error: "Bearer Tokenが設定されてないよ" });
     }
 
